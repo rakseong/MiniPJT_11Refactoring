@@ -6,23 +6,45 @@
 <html>
 <head>
 
-<link rel="stylesheet" href="/css/admin.css" type="text/css">
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<meta charset="EUC-KR">
+	
+	<!-- 참조 : http://getbootstrap.com/css/   참조 -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	
+	<!--  ///////////////////////// Bootstrap, jQuery CDN ////////////////////////// -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	
+	<!-- Bootstrap Dropdown Hover CSS -->
+   <link href="/css/animate.min.css" rel="stylesheet">
+   <link href="/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+   
+    <!-- Bootstrap Dropdown Hover JS -->
+   <script src="/javascript/bootstrap-dropdownhover.min.js"></script>
+   
+   <style>
+ 		body {
+            padding-top : 70px;
+        }
+     </style>
+   
 <script type="text/javascript">
 	function fncGetList(currentPage){
 		$("#currentPage").val(currentPage);
-		document.detailForm.submit();
+		$("form").attr("method" , "POST").attr("action" , "/prod/getProd").submit();
 	}
 
 	$(function(){
 		
-		$(".ct_btn01:contains('구매')").on('click',function(){
+		$("a[name='prch']").on('click',function(){
 			
 			self.location = "/prch/addPurchase?prod_no=${vo.prodNo}";
 		})
 		
-		$(".ct_btn01:contains('확인')").on('click',function(){
-			history.go(-1);
+		$("a[name='prePage']").on('click',function(){
+			self.location = "/prod/listProduct?menu=${param.menu}";;
 		})
 		
 	})
@@ -32,191 +54,134 @@
 
 <body bgcolor="#ffffff" text="#000000">
 
-<form name="detailForm" method="post">
-<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
+<jsp:include page="/layout/toolbar.jsp" />
+
+<div class="container">
+
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <h3 class="text-info" href="#">상품상세조회</h3>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+            <li><a name='prePage'><strong>확인</strong></a></li>
+              <c:if test="${!empty user && vo.proTranCode eq '0'}">
+              <li><a name='prch'><strong>구매</strong></a></li>
+            </c:if>
+            </ul>
+          </div><!--/.nav-collapse -->
+          
+        </div><!--/.container-fluid -->
+      </nav>
+</div>
+
+<div class="container">
 	
-	<tr>
-		<td width="15" height="37"><img src="/images/ct_ttl_img01.gif"	width="15" height="37"></td>
-		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left: 10px;">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="93%" class="ct_ttl01">상품상세조회</td>
-					<td width="20%" align="right">&nbsp;</td>
-				</tr>
-			</table>
-		</td>
-		<td width="12" height="37">
-			<img src="/images/ct_ttl_img03.gif"  width="12" height="37"/>
-		</td>
-	</tr>
-</table>
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 13px;">
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">
-			상품번호 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="105">${param.productNo}</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">
-			상품명 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${vo.prodName}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">
-			상품이미지 <img 	src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">
-		<c:forEach items="${fileList}" var="file">
-			<img alt="상품 이미지" src="/images/uploadFiles/${file}">
-		</c:forEach>
-		</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">
-			상품상세정보 <img src="/images/ct_icon_red.gif" width="3" height="3" align="absmiddle"/>
-		</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${vo.prodDetail}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">제조일자</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${vo.manuDate}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">가격</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${vo.price}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-	<tr>
-		<td width="104" class="ct_write">등록일자</td>
-		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01">${vo.regDate}</td>
-	</tr>
-	<tr>
-		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
-	</tr>
-</table>
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
-	<tr>
-		<td width="53%"></td>
-		<td align="right">
-
-		<table border="0" cellspacing="0" cellpadding="0">
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2"><strong>상품번호 </strong></div>
+			<div class="col-xs-8 col-md-4">${param.productNo}</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>상품명 </strong></div>
+			<div class="col-xs-8 col-md-4">${vo.prodName}</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>상품이미지 </strong></div>
+			<div class="col-xs-8 col-md-4">
+			<c:set var="i" value="0" />
+				<c:forEach items="${fileList}" var="file" varStatus="status">
+					<c:set var="i" value="${ i+1 }" />
+					<img alt="상품 이미지" src="/images/uploadFiles/${file}" width="400px" height="400px"><br>
+				
+				</c:forEach>
+			</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>상품상세정보 </strong></div>
+			<div class="col-xs-8 col-md-4">${vo.prodDetail}</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2"><strong>제조일자</strong></div>
+			<div class="col-xs-8 col-md-4">${vo.manuDate}</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>가격</strong></div>
+			<div class="col-xs-8 col-md-4">${vo.price}</div>
+		</div>
+		
+		<hr/>
+		
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>등록일자</strong></div>
+			<div class="col-xs-8 col-md-4">${vo.regDate}</div>
+		</div>
+		
+		<hr/>
+		
+ 	</div>
+ 	<br><br>
+ <div class="container">
+ <c:if test="${resultPage.totalCount != 0}">
+ 	<div class="row">
+ 		<div>
+	       <h3 class=" text-success">${vo.prodName}에 대한 리뷰</h3>
+	    </div>
+	</div>
+	
+	<table class="table table-hover table-striped" >
+      
+        <thead>
+          <tr>
+            <th class="text-center">No</th>
+            <th align="left" >작성자</th>
+            <th align="left">평점</th>
+            <th align="left">리뷰등록일</th>
+            <th align="left">내용</th>
+          </tr>
+        </thead>
+       
+		<tbody>
+		  <c:set var="i" value="0" />
+		  <c:forEach var="comment" items="${list}">
+			<c:set var="i" value="${ i+1 }" />
 			<tr>
-				<td width="17" height="23">
-					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
-				</td>
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-						확인
-					</td>
-					<td width="14" height="23">
-					<img src="/images/ct_btnbg03.gif" width="14" height="23">
-					</td>
-				<td width="10"></td>
-				<c:if test="${!empty user && vo.proTranCode eq '0'}">
-				<td width="17" height="23">
-					<img src="/images/ct_btnbg01.gif" width="17" height="23"/>
-				</td>
-					<td background="/images/ct_btnbg02.gif" class="ct_btn01" style="padding-top: 3px;">
-					구매
-				</td>
-				<td width="14" height="23">
-					<img src="/images/ct_btnbg03.gif" width="14" height="23">
-				</td>
-				</c:if>
-				<td width="30"></td>
+			  <td align="center">${ i }</td>
+			  <td align="left">${comment.userId}</td>
+			  <td align="left">${comment.prodGrade} / 5</td>
+			  <td align="left">${comment.commentRegDate}</td>
+			  <td align="left">${comment.commentDetail}</td>
 			</tr>
-		</table>
-
-		</td>
-	</tr>
-</table>
-
-<c:if test="${resultPage.totalCount != 0}">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
-	<tr>
-		<td colspan="11" >전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
-	</tr>
-	<tr>
-		<td class="ct_list_b" width="50">No</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="50">작성자</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="50">평점</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="50">리뷰등록일</td>
-		<td class="ct_line02"></td>
-		<td class="ct_list_b" width="100">내용</td>
-		<td class="ct_line02"></td>
-	</tr>
-	
-	<c:set var="i" value="0"/>
-	<c:forEach var="comment" items="${list}">
-		<c:set var="i" value="${ i+1 }" />
-		<tr class="ct_list_pop">
-		<td align="center">${i}</td>
-		<td></td>
-		<td align="left">${comment.userId}</td>
-		<td></td>
-		<td align="left">${comment.prodGrade} / 5</td>
-		<td></td>
-		<td align="left">${comment.commentRegDate}</td>
-		<td></td>
-		<td align="left">${comment.commentDetail}
-		</td>	
-		</tr>
-		<tr>
-			<td colspan="11" bgcolor="D6D7D6" height="1"></td>
-		</tr>
-	</c:forEach>
-</table>
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
-	<tr>
-		<td align="center">
-		<input type="hidden" id="currentPage" name="currentPage" value=""/>
-		<jsp:include page="../common/pageNavigator.jsp"/>
-    	</td>
-	</tr>
-</table>
-</c:if>
-
+          </c:forEach>
+        
+        </tbody>
+      
+      </table>
+<form>
+	<input type="hidden" id="currentPage" name="currentPage" value="${resultPage.currentPage}"/>
+	<input type="hidden" id="productNo" name="productNo" value="${param.productNo}"/>
+	<jsp:include page="../common/pageNavigator_new.jsp"/>
 </form>
-
+</c:if>
+</div>
+<div class="container">
+	
+</div>
 </body>
 </html>

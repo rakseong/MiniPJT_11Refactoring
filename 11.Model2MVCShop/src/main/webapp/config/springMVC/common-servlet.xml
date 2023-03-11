@@ -25,11 +25,9 @@
 		<context:exclude-filter 	type="annotation" 	expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan> 
 	
-	
    	<!-- ■ DefaultAnnotationHandlerMapping 설정 등 기타 Annotation 기반
    	        모든 기능을 사용 할 수 있는 아래의 설정으로 변경 -->
 	<mvc:annotation-driven />
-	
 	
 	<!-- ■ Annotation 기반의 모든 기능을 사용 할 수 있는 설정
 	          <mvc:annotation-driven /> 사용으로 interceptor 를 직접

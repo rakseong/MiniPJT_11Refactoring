@@ -161,26 +161,25 @@ public class ProductController {
 	
 	@PostMapping("updateProduct")
 	public String updateProduct(@ModelAttribute("vo") Product product,@RequestParam("prodNo") int prodNo,
-			@RequestParam("menu") String menu,@RequestParam("file") MultipartFile file ) throws Exception {
+			@RequestParam("menu") String menu,@RequestParam(name="files", required = false) MultipartFile file ) throws Exception {
 		product.setProdNo(prodNo);
-		String fileName = file.getOriginalFilename();//파일명 가져오기
-		long size = file.getSize();
-		String temDir = "C:\\workspace\\11.Model2MVCShop\\src\\main\\webapp\\images\\uploadFiles";
-		
-		System.out.println(fileName);
-		System.out.println(size);
-		
-		String uniqueFileName = System.currentTimeMillis()+"_"+fileName;
-		
-		File saveFile = new File((temDir)+"\\"+uniqueFileName);
-		try {
-			file.transferTo(saveFile);
-		} catch (Exception e) {
-			System.out.println(e);
+		if(file != null) {
+			String fileName = file.getOriginalFilename();//파일명 가져오기
+			long size = file.getSize();
+			String temDir = "C:\\workspace\\11.Model2MVCShop\\src\\main\\webapp\\images\\uploadFiles";
+			System.out.println(fileName);
+			System.out.println(size);
+			String uniqueFileName = System.currentTimeMillis()+"_"+fileName;
+			
+			File saveFile = new File((temDir)+"\\"+uniqueFileName);
+			try {
+				file.transferTo(saveFile);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			product.setFileName(uniqueFileName);
 		}
-		
-		product.setFileName(uniqueFileName);
-		
+
 		productService.updateProduct(product);
 		
 		return "forward:/product/getProduct.jsp?productNo="+prodNo+"&menu="+menu;
