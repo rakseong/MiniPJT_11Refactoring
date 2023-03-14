@@ -105,7 +105,7 @@ $(function(){
 		  <div class="form-group">
 		    <label for="prodDetail" class="col-sm-offset-1 col-sm-3 control-label">상품상세정보</label>
 		    <div class="col-sm-4">
-		      <textarea class="form-control"  value="${vo.prodDetail}" rows="3" id="prodDetail" name="prodDetail" placeholder="변경할 상품에 대한 간단한 설명"></textarea>
+		      <textarea class="form-control" rows="3" id="prodDetail" name="prodDetail" placeholder="변경할 상품에 대한 간단한 설명">${vo.prodDetail}</textarea>
 		    </div>
 		  </div>
 		  

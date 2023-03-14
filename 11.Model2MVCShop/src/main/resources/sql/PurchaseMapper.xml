@@ -45,7 +45,7 @@
 	 <update id="updatePurchase" parameterType="purchase">
 	 	UPDATE transaction SET 
 		PAYMENT_OPTION =#{paymentOption:VARCHAR},RECEIVER_NAME =#{receiverName}, 
-		RECEIVER_PHONE =#{receiverPhone},DEMAILADDR =#{divyAddr},DLVY_REQUEST =#{divyRequest}, DLVY_DATE =TO_DATE(#{divyDate},'YYYY-MM-DD HH24:MI:SS,')
+		RECEIVER_PHONE =#{receiverPhone},DEMAILADDR =#{divyAddr},DLVY_REQUEST =#{divyRequest}, DLVY_DATE =TO_DATE(#{divyDate},'YYYY-MM-DD HH24:MI:SS')
 		WHERE TRAN_NO=#{tranNo}
 	 </update>
 	 

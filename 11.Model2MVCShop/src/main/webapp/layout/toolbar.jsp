@@ -150,7 +150,7 @@
 	 	
 	 	$( "a:contains('최근본상품')" ).on("click" , function() {
 	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			$(self.location).attr("href","history()");
+			$(self.location).attr("href","javascript:history()");
 		});
 	 	
 	 	

@@ -28,17 +28,17 @@
 
 $(function(){
 	
-	$("td:contains('구매')").on('click',function(){
+	$("a[name='prch']").on('click',function(){
 		
 		$("form").attr("method","post").attr("action","/prch/addPurchase").attr("enctype","multipart/form-data").submit();
 		
 	})
 	
-	$(".ct_btn01:contains('취소')").on('click',function(){
+	$("a[name='prePage']").on('click',function(){
 		$("form")[0].reset();
 	})
 	
-	$("td.ct_write01 img").on('click',function(){
+	$("img").on('click',function(){
 		show_calendar('document.detailForm.divyDate', document.detailForm.divyDate.value);
 	})
 	
@@ -60,8 +60,8 @@ $(function(){
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-            <li><a name='prePage'><strong>구매하기</strong></a></li>
-              <li><a name='prch'><strong>취소</strong></a></li>
+            <li><a name='prch'><strong>구매하기</strong></a></li>
+              <li><a name='prePage'><strong>취소</strong></a></li>
             </ul>
           </div><!--/.nav-collapse -->
           
@@ -173,7 +173,7 @@ $(function(){
 		      <input type="text" class="form-control" id="divyDate" readonly="readonly" name="divyDate" placeholder="배송희망 날짜">
 		    </span>
 		    <span>
-		    	<img 	src="../images/ct_icon_date.gif" width="15" height="15"/>
+		    	<img src="../images/ct_icon_date.gif" width="15" height="15"/>
 		    </span>
 		  </div>
 		  

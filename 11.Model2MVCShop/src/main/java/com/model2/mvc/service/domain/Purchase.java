@@ -18,9 +18,6 @@ public class Purchase {
 	private String tranCode;
 	private int tranNo;
 	
-	public Purchase(){
-	}
-	
 	public User getBuyer() {
 		return buyer;
 	}
@@ -34,6 +31,11 @@ public class Purchase {
 		this.divyAddr = divyAddr;
 	}
 	public String getDivyDate() {
+		if(divyDate != null) {
+			String divyDateTmp="";
+			String[] arr = divyDate.split("[-/\\s]");
+			divyDate = arr[0] + arr[1] + arr[2];
+		}
 		return divyDate;
 	}
 	public void setDivyDate(String divyDate) {

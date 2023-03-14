@@ -52,7 +52,7 @@
 <title>Insert title here</title>
 </head>
 
-<body bgcolor="#ffffff" text="#000000">
+<body>
 
 <jsp:include page="/layout/toolbar.jsp" />
 

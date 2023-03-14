@@ -19,7 +19,7 @@
 	
 	<!-- SQL : INSERT -->
 	<insert 	id="addComment"	parameterType="comment" >
-	 	INSERT INTO product
+	 	INSERT INTO comments
 		VALUES(seq_comment_comment_no.nextval,#{purchase.tranNo},#{commentDetail},
 		sysdate,#{prodGrade},#{prodNo},#{userId})
 	 </insert>
