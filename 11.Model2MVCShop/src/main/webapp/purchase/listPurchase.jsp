@@ -113,7 +113,7 @@ $(function(){
             <th align="left">회원명</th>
             <th align="left">수령인 전화번호</th>
             <th align="left">배송현황</th>
-            <th align="left">정보수정</th>
+            <th class="text-center">기타<br/> <strong class="text-danger">(리뷰는 배송완료 제품만 가능합니다.)</strong></th>
           </tr>
         </thead>
        
@@ -143,7 +143,7 @@ $(function(){
 				</c:if>
 						상태 입니다.
 			  </td>
-			  <td class="list_tranCode">
+			  <td class="list_tranCode text-center">
 			  	<c:if test="${tranCode eq 2}">
 					물건도착
 					<input type="hidden" value="${purchase.tranNo}">

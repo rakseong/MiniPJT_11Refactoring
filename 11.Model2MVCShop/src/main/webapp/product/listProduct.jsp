@@ -48,44 +48,79 @@ function fncGetOrderList(currentPage,orderStandard){
 
 $(function(){
 	
-// 	let productIndex=1;
+let productIndex=1;
 	
-// 	$(window).scroll(function(){
-// 			var scrollTop = $(this).scrollTop();
-// 			var windowHeight = $(this).height();
-// 			var documentHeight = $(document).height();
-// 			//console.log("scrollTop : "+scrollTop+" windowHeight : "+windowHeight+" documentHeight : "+documentHeight)
+	$(window).scroll(function(){
+			var scrollTop = $(this).scrollTop();
+			var windowHeight = $(this).height();
+			var documentHeight = $(document).height();
+			//console.log("scrollTop : "+scrollTop+" windowHeight : "+windowHeight+" documentHeight : "+documentHeight)
 		 	
-// 			if(scrollTop + windowHeight == documentHeight && ${resultPage.totalCount}>= (productIndex*(${resultPage.pageSize}-1))){
-// 				productIndex++;
-// 				$.ajax({
-// 					url : "/prod/json/prodListScroll",
-// 					method : "POST",
-// 					data : JSON.stringify({
-// 						searchCondition : $("select[name='searchCondition']").val(),
-// 						searchKeyword : $("input[name='searchKeyword']").val(),
-// 						currentPage : productIndex
-// 					}),
-// 					headers : {
-// 						"Accept" : "application/json",
-// 						"Content-Type" : "application/json"
-// 					},
-// 					success : function(JSONData , status){
-// 						var prodIndex = (${resultPage.pageSize} * (productIndex-1))+1;
-// 						for(var i=0; i<JSONData.length; i++){
-							
-// 							let product = JSONData[i];
-// 							console.log(product.prodName);
-// 							$("table:last").append(	
-									
-// 							)//end of append
-// 						}//end of for
-// 					}//end of sucess
+			if(scrollTop + windowHeight == documentHeight && ${resultPage.totalCount}>= (productIndex*(${resultPage.pageSize}-1))){
+				productIndex++;
+				$.ajax({
+					url : "/prod/json/prodListScroll",
+					method : "POST",
+					data : JSON.stringify({
+						searchCondition : $("select[name='searchCondition']").val(),
+						searchKeyword : $("input[name='searchKeyword']").val(),
+						orderStandard : $("input[name='orderStandard']").val(),
+						currentPage : productIndex
+					}),
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},
+					success : function(JSONData , status){
+						var prodIndex = (${resultPage.pageSize} * (productIndex-1))+1;
+						for(var i=0; i<JSONData.length; i++){
+							let product = JSONData[i]
+							console.log(product.prodName)
+							if(product.fileName != null){
+								file = product.fileName.split(',');
+							}else{
+								file = "isEmptyImage.JPG";
+							}
+							let tranCode = product.proTranCode.trim();
+							console.log(tranCode)
+							let str = "";
+							if(tranCode==0){
+								str +='판매중'
+							}
+							if(tranCode==1){
+								str +='구매완료'
+							}
+							if(tranCode==2){
+								str +='배송중'
+							}
+							if(tranCode==3){
+								str +='배송완료'
+							}
+							if('${param.menu}'=='manage'){
+								var dev = "<td align='left'>"+str+"</td>";
+							}else{
+								var dev = "";
+							}
+							$("tbody:last").append(	
+									'<tr>'
+									+'<td class="text-center">'+(prodIndex+i)+'</td>'
+									+'<td align="center"><img alt="상품 이미지" src="/images/uploadFiles/'+file+'"' 
+									+'width="200px" height="200px"><br></td>'
+									+'<td class="getProd" align="left">'
+									+ product.prodName
+									+'<input type="hidden" value="'+product.prodNo+'">'
+									+'</td>'
+									+'<td align="left">'+product.price+'원</td>'
+									+ dev
+								+'</tr>'
+							)//end of append
+						}//end of for
+					}//end of sucess
 					
-// 				})//end of scrollAjax
+				})//end of scrollAjax
 				
-// 			}
-// 	})//end of scroll
+			}
+	})//end of scroll
 	
 	$("#searchKeyword").on('keydown',function(){
 		var condition = $("select[name=searchCondition]").val()
@@ -155,7 +190,7 @@ $(function(){
 <div class="row">
 	<div class="col-md-6 text-left">
 		    <p class="text-primary">
-		    	전체  ${resultPage.totalCount } 건수, 현재 ${resultPage.currentPage}  페이지
+		    	전체  ${resultPage.totalCount } 건수
 		   	</p>
 	</div>
 	
@@ -186,27 +221,22 @@ $(function(){
 </div>
 
 	<ul class="nav nav-pills" role="tablist">
-		<c:if test="${user.role eq 'admin'}">
 		<li role="presentation"><a href="#">등록 번호순</a></li>
-		</c:if>
         <li role="presentation"><a href="#">낮은 가격순</a></li>
         <li role="presentation"><a href="#">높은 가격순</a></li>
         <li role="presentation"><a href="#">이름순</a></li>
       </ul>
-
+      
 <table class="table table-hover table-striped">
 	<thead>
 		<tr>
 			<th class="text-center">No</th>
+			<th class="text-center">상품이미지</th>
 			<th align="left">상품명</th>
 			<th align="left">가격</th>
-			<c:if test="${user.role ne 'admin' || empty user}">
-			<th align="left">제조일자</th>
+			<c:if test="${param.menu == 'manage'}">
+				<th align="left">배송현황</th>
 			</c:if>
-			<c:if test="${user.role eq 'admin'}">
-			<th align="left">등록일</th>	
-			</c:if>
-			<th align="left">현재상태</th>	
 		</tr>
 	</thead>
 	<tbody>
@@ -214,37 +244,22 @@ $(function(){
 		<c:forEach var="product" items="${list}">
 		<c:set var="i" value="${ i+1 }" />
 		<tr>
-			<td align="center">${i}</td>
-			<c:if test="${product.proTranCode ne '0' && param.menu eq 'manage'}">
-				<td align="left">
-			</c:if>
-			<c:if test="${product.proTranCode eq '0' || (product.proTranCode ne '0' && param.menu eq 'search')}">
+			<td class="text-center">${ i }</td>
+			<td align="center"><img alt="상품 이미지" src="/images/uploadFiles/${fn:split(product.fileName,'-')[0]}" 
+			width="200px" height="200px"><br></td>
 				<td class="getProd" align="left">
-			</c:if>
 				${product.prodName}
 				<input type="hidden" value="${product.prodNo}">
 			</td>
-			<td align="left">${product.price}</td>
-			<c:if test="${user.role ne 'admin' || empty user}">
-			<td align="left">${product.manuDate}
-			</td>
-			</c:if>
-			<c:if test="${user.role eq 'admin'}">
-			<td align="left">${product.regDate}
-			</td>
-			</c:if>
-			<td align="left">
+			<td align="left">${product.price}원</td>
 			<c:set var="tranCode" value="${fn:trim(product.proTranCode)}"/>
-			<c:if test="${!empty user && user.role eq 'admin'}">
+			<c:if test="${param.menu == 'manage'}">
+			<td align="left">
 				<c:if test="${tranCode eq '0'}">
 					판매중
 				</c:if>
 				<c:if test="${tranCode eq '1'}">
 					구매완료
-					<c:if test="${param.menu eq 'manage'}">
-						배송하기
-						<input type="hidden" value="${product.prodNo}">
-					</c:if>
 				</c:if>
 				<c:if test="${tranCode eq '2'}">
 					배송중
@@ -252,23 +267,14 @@ $(function(){
 				<c:if test="${tranCode eq '3'}">
 					배송완료
 				</c:if>
-			</c:if>
-			<c:if test="${empty user || user.role ne 'admin'}">
-				<c:if test="${tranCode eq '0'}">
-					판매중
-				</c:if>
-				<c:if test="${tranCode eq '1' || tranCode eq '2' || tranCode eq '3'}">
-					재고 없음
-				</c:if>
-			</c:if>
 			</td>
+			</c:if>
 		</tr>
 	</c:forEach>
 	</tbody>
 	
 </table>
 </div>
-	<jsp:include page="../common/pageNavigator_new.jsp"/>
 
 <!--  페이지 Navigator 끝 -->
 

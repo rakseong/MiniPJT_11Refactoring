@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -33,7 +34,7 @@
 <script type="text/javascript">
 	function fncGetList(currentPage){
 		$("#currentPage").val(currentPage);
-		$("form").attr("method" , "POST").attr("action" , "/prod/getProd").submit();
+		$("form").attr("method" , "POST").attr("action" , "/prod/getProduct?menu=${param.menu}").submit();
 	}
 
 	$(function(){
@@ -44,7 +45,11 @@
 		})
 		
 		$("a[name='prePage']").on('click',function(){
-			self.location = "/prod/listProduct?menu=${param.menu}";;
+			if('${param.menu}'=='dev'){
+				self.location = "/prod/listDvry?menu=dev";
+			}else{
+				self.location = "/prod/listProduct?menu=${param.menu}";
+			}
 		})
 		
 	})
@@ -132,8 +137,20 @@
 	  		<div class="col-xs-4 col-md-2 "><strong>등록일자</strong></div>
 			<div class="col-xs-8 col-md-4">${vo.regDate}</div>
 		</div>
-		
+		<c:set var="tranCode" value="${fn:trim(vo.proTranCode)}"/>
 		<hr/>
+		
+		<div class="row">
+	  		<div class="col-xs-4 col-md-2 "><strong>판매여부</strong></div>
+			<div class="col-xs-8 col-md-4">
+					<c:if test="${tranCode eq '0'}">
+						판매중
+					</c:if>
+					<c:if test="${tranCode eq '1' || tranCode eq '2' || tranCode eq '3'}">
+						판매완료
+					</c:if>
+			</div>
+		</div>
 		
  	</div>
  	<br><br>

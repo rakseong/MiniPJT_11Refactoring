@@ -53,7 +53,7 @@ public class ProductController {
 			@RequestParam("files") List<MultipartFile> fileList) throws Exception{
 		System.out.println(prod);
 
-		String temDir = "C:\\workspace\\11.Model2MVCShop\\src\\main\\webapp\\images\\uploadFiles";
+		String temDir = "C:\\Users\\bitcamp\\git\\PJT11\\11.Model2MVCShop\\src\\main\\webapp\\images\\uploadFiles";
 		String prodTemp = "";
 		long listSize = fileList.size();
 		int temp = 1;
@@ -108,6 +108,27 @@ public class ProductController {
 		return "forward:/product/listProduct.jsp?menu="+menu;
 	}
 	
+	@RequestMapping("listDvry")
+	public String listDvry(@ModelAttribute("search") Search search ,@RequestParam(value="currentPage", required = false) Integer currentPage
+			,@RequestParam("menu") String menu, HttpServletRequest req) throws Exception{
+		if(currentPage == null) {
+			currentPage = 1;
+		}
+		search.setCurrentPage(currentPage);
+		search.setSearchCondition("2");
+		search.setPageSize(pageSize);
+		
+		Map<String,Object> map= productService.getProductList(search);
+		
+		Page resultPage = new Page(search.getCurrentPage(),((Integer)map.get("totalCount")).intValue()
+				,pageUnit,pageSize);
+		
+		req.setAttribute("resultPage", resultPage);
+		req.setAttribute("list", map.get("list"));
+		
+		return "forward:/product/deliveryProduct.jsp?menu="+menu;
+	}
+	
 	@RequestMapping("getProduct")
 	public String getProduct(@ModelAttribute("search") Search search,@RequestParam("productNo") int prodNo
 			,@RequestParam(name="currentPage", required = false) Integer currentPage,@RequestParam("menu") String menu, HttpServletRequest req) throws Exception{
@@ -138,7 +159,7 @@ public class ProductController {
 		req.setAttribute("vo", vo);
 		
 		
-		if(menu.equals("manage")) {
+		if(menu.equals("manage") && vo.getProTranCode().equals("0")) {
 			return "forward:/prod/updateProduct";
 		}else {
 			return "forward:/product/getProduct.jsp";
@@ -166,7 +187,7 @@ public class ProductController {
 		if(file != null) {
 			String fileName = file.getOriginalFilename();//파일명 가져오기
 			long size = file.getSize();
-			String temDir = "C:\\workspace\\11.Model2MVCShop\\src\\main\\webapp\\images\\uploadFiles";
+			String temDir = "C:\\Users\\bitcamp\\git\\PJT11\\11.Model2MVCShop\\src\\main\\webapp\\images\\uploadFiles";
 			System.out.println(fileName);
 			System.out.println(size);
 			String uniqueFileName = System.currentTimeMillis()+"_"+fileName;

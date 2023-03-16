@@ -54,7 +54,7 @@ $(function(){
 	})
 	
 	$("a.btn-default.btn").on('click',function(){
-		self.location = "/user/listUser"
+		self.location = "/prod/listProduct?menu=${menu}"
 	})
 	
 	$("img:first").on('click',function(){

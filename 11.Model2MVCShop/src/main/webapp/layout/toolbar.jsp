@@ -42,9 +42,6 @@
 	                         <c:if test="${sessionScope.user.role == 'admin'}">
 	                         	<li><a href="#">회원정보조회</a></li>
 	                         </c:if>
-	                         
-	                         <li class="divider"></li>
-	                         <li><a href="#">etc...</a></li>
 	                     </ul>
 	                 </li>
 	                 
@@ -58,8 +55,7 @@
 		                     <ul class="dropdown-menu">
 		                         <li><a href="#">판매상품등록</a></li>
 		                         <li><a href="#">판매상품관리</a></li>
-		                         <li class="divider"></li>
-		                         <li><a href="#">etc..</a></li>
+		                         <li><a href="#">배송관리</a></li>
 		                     </ul>
 		                </li>
 	                 </c:if>
@@ -78,8 +74,6 @@
 	                         </c:if>
 	                         
 	                         <li><a href="#">최근본상품</a></li>
-	                         <li class="divider"></li>
-	                         <li><a href="#">etc..</a></li>
 	                     </ul>
 	                 </li>
 	                 
@@ -131,6 +125,11 @@
 	 	$( "a:contains('판매상품등록')" ).on("click" , function() {
 	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
 			$(self.location).attr("href","/product/addProductView.jsp");
+		});
+	 	
+	 	$( "a:contains('배송관리')" ).on("click" , function() {
+	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$(self.location).attr("href","/prod/listDvry?menu=dev");
 		});
 	 	
 	 	$( "a:contains('판매상품관리')" ).on("click" , function() {

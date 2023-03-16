@@ -34,7 +34,38 @@
    	</style>
    	
      <!--  ///////////////////////// JavaScript ////////////////////////// -->
-	 	
+	<script type="text/javascript">
+	
+	let arr = [
+		{
+			quote: "아이들은 누구나 예술가이다.",
+			author: "피카소"
+		},
+		{
+			quote: "내면의 목소리는 들리지 않게 된다.",
+			author: "반 고흐"
+		},
+		{
+			quote: "완벽을 두려워하지 말라.",
+			author: "달리"
+		},
+		{
+			quote: "영감이 오는 것을 기다리고 있을 수는 없다.",
+			author: "런던"
+		},
+		{
+			quote: "의욕만 있으면 이런 노력만으로도 얼마든지 많은 생각을 찾을 수 있다.",
+			author: "수스"
+		},
+	];
+	
+	$(function(){
+		var random = Math.floor(Math.random()* arr.length);
+		$('#quote').text(arr[random].quote);
+		$('#author').text(arr[random].author);	
+		})
+	})
+	</script>
 	
 </head>
 	
@@ -55,13 +86,12 @@
 
 	<!-- 참조 : http://getbootstrap.com/css/   : container part..... -->
 	<div class="container">
-        <h3>나폴레옹은 이렇게 말했다.</h3>
-        <p>"오늘 나의 불행은 언젠가 내가 잘못 보낸 시간의 보복이다."</p>
-  	 	<h3>"... 장벽은 절실하게 원하지 않는 사람들을 걸러내려고 존재합니다. 장벽은. 당신이 아니라 '다른' 사람들을 멈추게 하려고 거기 있는 것이지요."</h3>
-         <h3>혜광스님</h3>
-         <p>행복한 삶의 비결은.</p>
-         <p>좋아하는 일을 하는 것이 아리라,</p>
-         <p>지금 하는 일을 좋아하는 것입니다.</p>
+        <h3>오늘의 명언</h3>
+        <br/><br/><br/>
+        
+         <h3 id="quote">변명 중에서도 가장 어리석고 못난 변명은 "시간이 없어서" 라는 변명이다.</h3>
+         <h2></h2>
+         <h4 id="author">-Thomas Alva Edison-</h4>
   	 </div>
 
 </body>
